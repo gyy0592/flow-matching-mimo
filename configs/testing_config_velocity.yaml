@@ -1,0 +1,39 @@
+# Shared configuration for testing scripts
+
+# --- Execution & I/O ---
+# The results directory for each test. %d is replaced by the seed.
+results_dir_velocity: "results_velocity_seed%d"
+results_dir_barry: "results_barry_seed%d"
+
+# Model and data paths are loaded from the file supplied with --train_config.
+
+# --- Dataset ---
+test_data_start_index: 9500   # Start index in the data file for the test set.
+num_test_channels: 50         # Number of channel matrices to use for testing.
+
+# --- Testing & Simulation ---
+sampling_steps: 1             # Number of steps per noise level in the sampler.
+modulation_order: 4           # Modulation order (e.g., 4 for QPSK).
+snr_range: [-10, 22.5, 2.5]   # SNR test range [start, stop, step].
+# snr_range: [15, 22.5, 2.5]   # SNR test range [start, stop, step].
+# snr_range: [-10, 17.5, 2.5]   # SNR test range [start, stop, step].
+
+# --- Langevin Dynamics Parameters ---
+# Symbol-update noise schedule parameters.
+low_snr_threshold: 995.0
+
+low_snr_params:
+  # temp_x: 0.5
+  temp_x: 0.5
+  sigma_x_range: [0.6, 0.01]
+  epsilon: 0.0001
+
+high_snr_params:
+  temp_x: 0.1
+  sigma_x_range: [0.8, 0.01]
+  epsilon: 0.00004
+
+# --- ODE-based Velocity Sampling Parameters ---
+sampling_params:
+  num_steps: 400
+  target_sigma_start: 25

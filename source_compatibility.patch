@@ -1,0 +1,74 @@
+--- a/data/sample_generator.py
++++ b/data/sample_generator.py
+@@ -33 +33 @@
+-        sqrt_mod_n = np.int(np.sqrt(self.mod_n))
++        sqrt_mod_n = int(np.sqrt(self.mod_n))
+@@ -53 +53 @@
+-        indices_QAM = torch.randint(low=0, high=(np.int(np.sqrt(self.mod_n))), size=(batch_size, 2*NT))
++        indices_QAM = torch.randint(low=0, high=(int(np.sqrt(self.mod_n))), size=(batch_size, 2*NT))
+@@ -78 +78 @@
+-        joint_indices = np.int(np.sqrt(self.mod_n))*real_part + complex_part
++        joint_indices = int(np.sqrt(self.mod_n))*real_part + complex_part
+--- a/utils/util.py
++++ b/utils/util.py
+@@ -1 +0,0 @@
+-from unicodedata import name
+@@ -4,2 +3 @@
+-# from numpy import linalg as LA
+-from torchmetrics import SNR
++from torchmetrics.audio import SignalNoiseRatio as SNR
+@@ -13,0 +12,9 @@
++__all__ = [
++    "get_logger",
++    "sym_detection",
++    "batch_matvec_mul",
++    "batch_identity_matrix",
++    "dict2namespace",
++    "gaussian",
++]
++
+@@ -31 +38 @@
+-    #Convierte a complejo
++    # Split the real and imaginary symbol coordinates.
+@@ -33 +40 @@
+-    #Lo expande a los 4 posibles simbolos para comparar
++    # Compare each coordinate with every constellation point.
+@@ -37 +44 @@
+-    #Calcula la resta
++    # Compute squared Euclidean distances.
+@@ -70 +77 @@
+-    namespace = addAttr(namespace)
++    namespace = _addAttr(namespace)
+@@ -74 +81 @@
+-def addAttr(config):
++def _addAttr(config):
+@@ -88,2 +95,18 @@
+-    argr = torch.reshape(zt[:,0:NT],[-1,1]) - generator.QAM_const()[0].to(device=device)
+-    argi = torch.reshape(zt[:,NT:],[-1,1]) - generator.QAM_const()[1].to(device=device)
++    """Return the QAM posterior mean under Gaussian noise.
++
++    The input concatenates real and imaginary coordinates. The symbol prior
++    gradient uses this denoised estimate through compute_x_prior_gradient.
++    """
++    # Cache QAM constants on GPU to avoid repeated CPU->GPU transfers
++    # Reuse the device copy across symbol updates.
++    qam_const = generator.QAM_const()
++    if not hasattr(generator, '_qam_const_cached_device') or generator._qam_const_cached_device != device:
++        generator._qam_const_real_gpu = qam_const[0].to(device=device)
++        generator._qam_const_imag_gpu = qam_const[1].to(device=device)
++        generator._qam_const_cached_device = device
++    
++    qam_real = generator._qam_const_real_gpu
++    qam_imag = generator._qam_const_imag_gpu
++    
++    argr = torch.reshape(zt[:,0:NT],[-1,1]) - qam_real
++    argi = torch.reshape(zt[:,NT:],[-1,1]) - qam_imag
+@@ -98,2 +121,2 @@
+-    xr = torch.mul(torch.reshape(exp,[-1,M **2]).float(), generator.QAM_const()[0].to(device=device))
+-    xi = torch.mul(torch.reshape(exp,[-1,M **2 ]).float(), generator.QAM_const()[1].to(device=device))
++    xr = torch.mul(torch.reshape(exp,[-1,M **2]).float(), qam_real)
++    xi = torch.mul(torch.reshape(exp,[-1,M **2 ]).float(), qam_imag)
+@@ -105 +128 @@
+-    return x_out
+\ No newline at end of file
++    return x_out

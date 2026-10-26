@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this implementation, please cite the published paper in preferred-citation."
+title: "Flow Matching for Joint Channel Estimation and Symbol Detection in Massive MIMO"
+type: software
+repository-code: "https://github.com/gyy0592/flow-matching-mimo"
+authors:
+  - family-names: Guo
+    given-names: Yiyang
+  - family-names: Qiao
+    given-names: Jing
+  - family-names: Ye
+    given-names: Hao
+preferred-citation:
+  type: conference-paper
+  title: "Flow Matching for Joint Channel Estimation and Symbol Detection in Massive MIMO"
+  authors:
+    - family-names: Guo
+      given-names: Yiyang
+    - family-names: Qiao
+      given-names: Jing
+    - family-names: Ye
+      given-names: Hao
+  conference:
+    name: "IEEE International Conference on Communications (ICC 2026)"
+  publisher:
+    name: IEEE
+  year: 2026
+  start: 1
+  end: 6
+  doi: "10.1109/ICC59461.2026.11587708"
+  url: "https://ieeexplore.ieee.org/document/11587708/"

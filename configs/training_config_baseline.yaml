@@ -1,0 +1,40 @@
+model:
+  ema: true
+  ema_rate: 0.999
+  normalization: "InstanceNorm++"
+  nonlinearity: "elu"
+  sigma_dist: "geometric"
+  num_classes: 500
+  ngf: 32
+  sigma_begin: ""
+  sigma_rate: 0.995
+
+optim:
+  weight_decay: 0.0
+  optimizer: "Adam"
+  lr: 0.0001
+  beta1: 0.9
+  amsgrad: false
+  eps: 0.001
+
+training:
+  batch_size: 256
+  num_workers: 1
+  n_epochs: 40
+  anneal_power: 2.0
+  log_all_sigmas: false
+  eval_freq: 50
+  log_path: "./%s"
+  model_name: "models/model_3gpp_64x32.pt"
+
+data:
+  channel: "3GPP"
+  data_path: "data/H_bank_64.npz"
+  train_samples: 7500
+  val_samples: 2000
+  channels: 2
+  num_pilots: 30
+  noise_std: 0.01
+  image_size: [64, 32]
+  mixed_channels: false
+  norm_channels: "global"

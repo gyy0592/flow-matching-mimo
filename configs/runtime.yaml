@@ -1,0 +1,19 @@
+# Optional defaults loaded by utils.runtime_config.load_runtime_config.
+# The inference CLI reads num_realizations, batch_size_x_list and pilots_list.
+# Explicit CLI arguments override these defaults; other fields are reference values.
+
+# ---------- Reproducibility ----------
+seed: 4321                # Reference seed; specify --seed explicitly when running.
+
+# ---------- Reference paths ----------
+results_dir: ./results_velocity_seed4321         # Flow-matching output root.
+baseline_dir: ./results_barry_seed4321           # Optional baseline output root.
+default_step_subdir: steps400                    # Reference step-count directory.
+
+# ---------- Inference defaults ----------
+num_realizations: 5                             # Number of independent initializations.
+batch_size_x_list: [50]                          # Symbol counts.
+pilots_list: [10, 20, 50, 100]                   # Pilot counts; formal launcher specifies 30.
+
+# ---------- Reference device ----------
+device: cuda                                     # Inference uses CUDA.

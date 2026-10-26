@@ -1,0 +1,29 @@
+# Downloaded data, pretrained weights and generated results
+/data/*
+!/data/*.py
+/models/
+results_velocity_seed*/
+/output/
+
+# Upstream helpers prepared locally from the documented fixed source
+/data/loaders.py
+/data/sample_generator.py
+/utils/util.py
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Runtime logs
+logs/
+*.log
+
+# Editor and operating-system files
+.DS_Store
+*.swp
+
+# Local virtual environments
+.venv/
